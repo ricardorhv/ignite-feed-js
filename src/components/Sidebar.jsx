@@ -1,9 +1,42 @@
 import { PencilLine } from 'phosphor-react'
 import { Avatar } from './Avatar'
+import { useState } from 'react'
 
 import styles from './Sidebar.module.css'
 
-export function Sidebar() {
+export function Sidebar({ profileInfo }) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [profile, setProfile] = useState(profileInfo)
+  const [profileName, setProfileName] = useState(profile.name)
+  const [profileRole, setProfileRole] = useState(profile.role)
+
+  function handleOpenModal() {
+    setIsModalOpen(true)
+  }
+
+  function handleCloseModal() {
+    event.preventDefault()
+    setIsModalOpen(false)
+    setProfileName(profile.name)
+    setProfileRole(profile.role)
+  }
+
+  function handleChangeProfileName() {
+    setProfileName(event.target.value)
+  }
+
+  function handleChangeProfileRole() {
+    setProfileRole(event.target.value)
+  }
+
+  function handleChangeProfileInfo() {
+    setProfile({...profile, 
+      name: profileName,
+      role: profileRole,
+    })
+    setIsModalOpen(false)
+  }
+
   return (
     <aside className={styles.sidebar}>
       <img 
@@ -12,20 +45,39 @@ export function Sidebar() {
       />
 
       <div className={styles.profile}>
-        <Avatar src="https://github.com/ricardorhv.png"/>
+        <Avatar src={profile.avatarUrl}/>
 
-        <strong>Ricardo Vinciguerra</strong>
-        <span>Web Developer</span>
+        <strong>{profile.name}</strong>
+        <span>{profile.role}</span>
       </div>
       
       <footer>
-        <a href="#">
+        <button onClick={handleOpenModal} type='button'>
           <PencilLine
             size={20}
           />
           Editar seu perfil
-        </a>
+        </button>
       </footer>
+
+      {
+        isModalOpen ? (
+          <form onSubmit={handleChangeProfileInfo} className={styles.modal}>
+            <Avatar src="https://github.com/ricardorhv.png"/>
+            
+            <div className={styles.profileInfo}>
+              <input type="text" value={profileName} onChange={handleChangeProfileName}/>
+              <input type="text" value={profileRole} onChange={handleChangeProfileRole}/>
+            </div>
+
+            <footer>
+              <button onClick={handleCloseModal} type='button'>Cancelar</button>
+              <button type='submit'>Salvar</button>
+            </footer>
+          </form>
+        ) : ''
+      }
+
     </aside>
   )
 }
