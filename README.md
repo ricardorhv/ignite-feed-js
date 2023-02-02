@@ -1,7 +1,6 @@
-<div style="width: 100%; display: flex; justify-content: center; gap: 20px;">
-  <img src="./.github/ignite-logo.svg">
-  <h1>Ignite Feed</h1>
-</div>
+<p align="center">
+  <img src="./.github/logo.svg">
+</p>
 
 <hr>
 
